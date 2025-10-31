@@ -64,28 +64,50 @@ if mode == "vote":
 # 2) ENTRIES MODE (pretty, public-friendly view)
 # =====================================================================
 elif mode == "entries":
-    st.title("🧁 Current entries")
+    st.markdown(
+        """
+        <h1 style="text-align:center; font-weight:700; font-size:2.5rem; color:#5B3A1A;">
+            🍪 Current Entries
+        </h1>
+        <p style="text-align:center; margin-bottom:2rem; color:#7B4B2A;">
+            Here are the bakes in this round and how many people have judged them so far:
+        </p>
+        """,
+        unsafe_allow_html=True
+    )
 
-    # count how many votes per bake
+    # count votes per bake
     if df.empty:
         counts = {b: 0 for b in BAKES}
     else:
         counts = df["bake"].value_counts().to_dict()
-        # ensure all bakes present
         for b in BAKES:
             counts.setdefault(b, 0)
 
-    st.markdown("Here are the bakes in this round and how many people have judged them so far:")
+    # cookie + chocolate palette
+    cookie_bg = "#E6C199"     # warm cookie dough colour
+    choc_text = "#4B2E05"     # dark chocolate brown
+    choc_shadow = "rgba(75, 46, 5, 0.25)"
 
-    # make it a bit pretty
     cols = st.columns(3)
     for i, bake in enumerate(BAKES):
         with cols[i % 3]:
             st.markdown(
                 f"""
-                <div style="border:1px solid #eee; border-radius:12px; padding:12px; margin-bottom:12px; background:#fff;">
-                    <h4 style="margin-bottom:4px;">{bake}</h4>
-                    <p style="margin-bottom:4px;">Votes so far: <strong>{counts[bake]}</strong></p>
+                <div style="
+                    background-color: {cookie_bg};
+                    color: {choc_text};
+                    border-radius: 16px;
+                    padding: 16px 16px 12px 16px;
+                    margin-bottom: 16px;
+                    box-shadow: 0 4px 10px {choc_shadow};
+                    min-height: 110px;
+                    text-align:center;
+                ">
+                    <h3 style="margin: 0 0 6px 0; color: {choc_text};">{bake}</h3>
+                    <p style="margin: 0; color: {choc_text}; font-size: 0.9rem;">
+                        Votes so far: <strong>{counts[bake]}</strong>
+                    </p>
                 </div>
                 """,
                 unsafe_allow_html=True
