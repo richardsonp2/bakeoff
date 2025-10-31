@@ -17,8 +17,8 @@ if not DATAFILE.exists():
 df = pd.read_csv(DATAFILE)
 
 # ------------------------------ MODE DETECTION ------------------------------
-query_params = st.query_params
-mode = query_params.get("mode", ["vote"])[0]  # default to vote
+query_params = st.experimental_get_query_params()
+mode = query_params.get("mode", ["vote"])[0]  # "vote", "admin", "entries"
 
 # =====================================================================
 # 1) VOTING MODE
